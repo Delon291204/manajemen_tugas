@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
@@ -14,18 +15,40 @@ use App\Http\Controllers\PengumpulanController;
 */
 
 Route::get('/', function () {
+
+    // Jika sudah login
+    if (Auth::check()) {
+
+        if (Auth::user()->role == 'dosen') {
+            return redirect('/dashboard-dosen');
+        }
+
+        if (Auth::user()->role == 'mahasiswa') {
+            return redirect('/dashboard-mahasiswa');
+        }
+
+    }
+
+    // Jika belum login
     return view('auth.login');
-});
+
+})->middleware('guest');
 
 /*
 |--------------------------------------------------------------------------
-| Dashboard Default (Breeze)
+| Dashboard Default
 |--------------------------------------------------------------------------
 */
 
 Route::get('/dashboard', function () {
-    return redirect('/');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+    if (Auth::user()->role == 'dosen') {
+        return redirect('/dashboard-dosen');
+    }
+
+    return redirect('/dashboard-mahasiswa');
+
+})->middleware('auth')->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
