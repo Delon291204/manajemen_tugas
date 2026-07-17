@@ -31,7 +31,7 @@
 
 </head>
 
-<body class="font-sans antialiased bg-slate-100">
+<body class="font-sans antialiased bg-slate-50 text-slate-900">
 
     <div class="min-h-screen">
 
@@ -41,11 +41,15 @@
         {{-- Header --}}
         @isset($header)
 
-            <header class="bg-white border-b shadow-sm">
+            <header class="bg-white border-b border-slate-200">
 
-                <div class="max-w-7xl mx-auto px-6 py-5">
+                <div class="max-w-7xl mx-auto px-6 py-6">
 
-                    {{ $header }}
+                    <div class="text-xl font-semibold tracking-tight text-slate-900">
+
+                        {{ $header }}
+
+                    </div>
 
                 </div>
 

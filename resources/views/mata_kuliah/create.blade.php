@@ -1,8 +1,11 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-            ➕ Tambah Mata Kuliah
+        <h2 class="font-semibold text-2xl text-slate-800 leading-tight tracking-tight flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Tambah Mata Kuliah
         </h2>
     </x-slot>
 
@@ -12,25 +15,31 @@
 
             @if ($errors->any())
 
-                <div class="mb-6 rounded-lg bg-red-100 border border-red-300 text-red-700 px-4 py-3">
+                <div class="mb-6 rounded-2xl bg-red-50 border border-red-100 text-red-700 px-5 py-4 flex gap-3">
 
-                    <strong>Terjadi kesalahan:</strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                    </svg>
 
-                    <ul class="list-disc ml-5 mt-2">
+                    <div>
+                        <p class="font-semibold text-sm">Terjadi kesalahan:</p>
 
-                        @foreach ($errors->all() as $error)
+                        <ul class="list-disc ml-5 mt-1.5 text-sm space-y-0.5">
 
-                            <li>{{ $error }}</li>
+                            @foreach ($errors->all() as $error)
 
-                        @endforeach
+                                <li>{{ $error }}</li>
 
-                    </ul>
+                            @endforeach
+
+                        </ul>
+                    </div>
 
                 </div>
 
             @endif
 
-            <div class="bg-white shadow-lg rounded-xl">
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm">
 
                 <div class="p-8">
 
@@ -41,44 +50,42 @@
 
                         <div class="mb-6">
 
-                            <label
-                                class="block text-sm font-semibold text-gray-700 mb-2">
+    <label
+        class="block text-sm font-semibold text-slate-700 mb-2">
 
-                                Nama Mata Kuliah
+        Mata Kuliah
 
-                            </label>
+    </label>
 
-                            <input
-                                type="text"
-                                name="nama_mk"
-                                value="{{ old('nama_mk') }}"
-                                required
-                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+    <select
+        name="master_mata_kuliah"
+        required
+        class="w-full rounded-xl border-slate-200 text-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-shadow duration-150">
 
-                        </div>
+        <option value="">
+            -- Pilih Mata Kuliah --
+        </option>
 
-                        <div class="mb-6">
+        @foreach($masterMataKuliah as $mk)
 
-                            <label
-                                class="block text-sm font-semibold text-gray-700 mb-2">
+            <option
+                value="{{ $mk->id }}"
+                {{ old('master_mata_kuliah') == $mk->id ? 'selected' : '' }}>
 
-                                Kode Mata Kuliah
+                {{ $mk->kode_mk }} - {{ $mk->nama_mk }}
 
-                            </label>
+            </option>
 
-                            <input
-                                type="text"
-                                name="kode_mk"
-                                value="{{ old('kode_mk') }}"
-                                required
-                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+        @endforeach
 
-                        </div>
+    </select>
+
+</div>
 
                         <div class="mb-8">
 
                             <label
-                                class="block text-sm font-semibold text-gray-700 mb-2">
+                                class="block text-sm font-semibold text-slate-700 mb-2">
 
                                 Semester
 
@@ -91,25 +98,27 @@
                                 max="14"
                                 value="{{ old('semester') }}"
                                 required
-                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                                class="w-full rounded-xl border-slate-200 text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-shadow duration-150">
 
                         </div>
 
                         <div class="flex justify-end gap-3">
 
                             <a href="/mata-kuliah"
-                               class="px-5 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition">
-
+                               class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors duration-150 rounded-xl text-sm font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                </svg>
                                 Kembali
-
                             </a>
 
                             <button
                                 type="submit"
-                                class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow transition">
-
+                                class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors duration-150 text-white rounded-xl text-sm font-medium shadow-sm shadow-indigo-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
                                 Simpan Mata Kuliah
-
                             </button>
 
                         </div>

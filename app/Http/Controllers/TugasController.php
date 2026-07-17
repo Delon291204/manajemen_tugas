@@ -207,36 +207,49 @@ public function tugasPerMataKuliahDosen($id)
 }
 
     /**
-     * Update tugas
-     */
-    public function update(Request $request, Tugas $tugas)
+ * Update tugas
+ */
+public function update(Request $request, Tugas $tugas)
 {
     $request->validate([
-        'judul_tugas' => 'required|string|max:255',
-        'deskripsi' => 'required',
         'deadline' => 'required|date'
     ]);
 
     $tugas->update([
-        'judul_tugas' => $request->judul_tugas,
-        'deskripsi' => $request->deskripsi,
         'deadline' => $request->deadline,
     ]);
 
     return redirect('/mata-kuliah/' . $tugas->id_mk . '/tugas')
-        ->with('success', 'Tugas berhasil diperbarui.');
+        ->with(
+            'success',
+            'Deadline tugas berhasil diperbarui.'
+        );
 }
 
     /**
-     * Hapus tugas
-     */
-   public function destroy(Tugas $tugas)
+ * Hapus tugas
+ */
+public function destroy(Tugas $tugas)
 {
     $idMataKuliah = $tugas->id_mk;
+
+    // Cek apakah sudah ada mahasiswa yang mengumpulkan tugas
+    if ($tugas->pengumpulan()->exists()) {
+
+        return redirect('/mata-kuliah/' . $idMataKuliah . '/tugas')
+            ->with(
+                'error',
+                'Tugas tidak dapat dihapus karena sudah ada mahasiswa yang mengumpulkan tugas.'
+            );
+    }
 
     $tugas->delete();
 
     return redirect('/mata-kuliah/' . $idMataKuliah . '/tugas')
-        ->with('success', 'Tugas berhasil dihapus.');
+        ->with(
+            'success',
+            'Tugas berhasil dihapus.'
+        );
+
 }
 }
